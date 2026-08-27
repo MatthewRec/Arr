@@ -1,0 +1,47 @@
+# media-subtitle-watcher.service
+#
+# Runs watch-and-strip.sh as a persistent background service that strips
+# embedded subtitle streams from video files the moment they land in your
+# media library.
+#
+# INSTALL
+#   1. Put watch-and-strip.sh and strip-embedded-subtitles.sh together in
+#      one directory, e.g. /opt/subtitle-strip/, and make sure both are
+#      executable:
+#        sudo mkdir -p /opt/subtitle-strip
+#        sudo cp watch-and-strip.sh strip-embedded-subtitles.sh /opt/subtitle-strip/
+#        sudo chmod +x /opt/subtitle-strip/*.sh
+#
+#   2. Edit the ExecStart line below: set --dir to your actual media root,
+#      and adjust --settle-seconds / --manifest / --remove-sidecars / --ext
+#      as you like. Also set User=/Group= to whatever user already owns
+#      your media files (commonly the same user Sonarr/Radarr run as).
+#
+#   3. Install and enable it:
+#        sudo cp media-subtitle-watcher.service /etc/systemd/system/
+#        sudo systemctl daemon-reload
+#        sudo systemctl enable --now media-subtitle-watcher.service
+#
+#   4. Check it's running / watch logs:
+#        sudo systemctl status media-subtitle-watcher.service
+#        journalctl -u media-subtitle-watcher.service -f
+#
+[Unit]
+Description=Strip embedded subtitle streams from newly-arrived media
+After=network.target local-fs.target
+
+[Service]
+Type=simple
+# Change to the user/group that owns your media files (e.g. the Sonarr/Radarr user)
+User=media
+Group=media
+WorkingDirectory=/opt/subtitle-strip
+ExecStart=/opt/subtitle-strip/watch-and-strip.sh --dir /path/to/your/media --settle-seconds 20 --manifest /var/lib/subtitle-strip/manifest.tsv --remove-sidecars
+Restart=on-failure
+RestartSec=10
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+
+[Install]
+WantedBy=multi-user.target
