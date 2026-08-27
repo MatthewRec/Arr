@@ -5,7 +5,7 @@
 # Real-time companion to strip-embedded-subtitles.sh. Watches a media
 # directory tree with inotify and, the moment a new (or modified) video file
 # shows up, waits for it to finish being written to disk, then strips any
-# embedded subtitle streams from it immediately -- no cron, no periodic
+# embedded subtitle streams from it immediately no cron, no periodic
 # re-scanning of your whole library, no wasted work.
 #
 # This is the recommended approach over a cron-based full/incremental scan:
@@ -31,7 +31,7 @@
 #                          (default: "mkv mp4 m4v avi mov ts")
 #   --settle-seconds N     After a file event fires, wait until the file's
 #                          size has been stable for this many seconds before
-#                          processing it -- avoids grabbing a file mid-write
+#                          processing it avoids grabbing a file mid-write
 #                          from your download client. Default: 20
 #   --strip-script PATH    Path to strip-embedded-subtitles.sh
 #                          (default: same directory as this script)
@@ -42,11 +42,11 @@
 #   --remove-sidecars      Passed through: also delete matching sidecar
 #                          subtitle files (.srt/.ass/.ssa/.sub/.idx/.vtt)
 #
-# Designed to run forever as a systemd service -- see
+# Designed to run forever as a systemd service see
 # media-subtitle-watcher.service in this delivery for a ready-to-use unit.
 # ---------------------------------------------------------------------------
 
-set -uo pipefail  # note: no -e here -- this loop must keep running even if one event errors
+set -uo pipefail  # note: no -e here, this loop must keep running even if one event errors
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MEDIA_DIR=""
