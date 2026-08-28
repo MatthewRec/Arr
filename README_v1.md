@@ -24,24 +24,24 @@ The exact sequence that worked: build a certificate tied to your TV, sign the pr
 ## Prerequisites
 
 - [ ] Tizen Studio installed, with the **Samsung Certificate Extension** added via Tizen Studio's Package Manager → Extension SDK.
-- [ ] A free **Samsung Developer account** — needed to generate the distributor certificate.
-- [ ] Computer and TV on the **same local network** (same subnet — not a guest network).
+- [ ] A free **Samsung Developer account** needed to generate the distributor certificate.
+- [ ] Computer and TV on the **same local network** (same subnet not a guest network).
 - [ ] The **Jellyfin.wgt** release you want to install, downloaded ahead of time.
 
 ## 1. Create the certificate
 
-A working Tizen certificate **profile** has two halves: an **author certificate** that identifies you, and a **distributor certificate** tied to your specific TV's Device Unique ID (DUID). Current Tizen firmware checks the distributor half — this is the part that actually has to match your TV.
+A working Tizen certificate **profile** has two halves: an **author certificate** that identifies you, and a **distributor certificate** tied to your specific TV's Device Unique ID (DUID). Current Tizen firmware checks the distributor half this is the part that actually has to match your TV.
 
-1. On the TV, find its DUID: **Menu → Support → Contact Samsung → Unique Device ID** (path varies slightly by firmware/region — sometimes under **Settings → Support → About This TV**).
+1. On the TV, find its DUID: **Menu → Support → Contact Samsung → Unique Device ID** (path varies slightly by firmware/region sometimes under **Settings → Support → About This TV**).
 2. In Tizen Studio: **Tools → Certificate Manager**.
 3. Click **+** to start a new profile. Cancel the migration dialog if it appears.
 4. Choose **Samsung** as the certificate type, then **TV** as the device type.
-5. Name the profile something you'll remember — you'll reference this name every time you sign a build.
+5. Name the profile something you'll remember you'll reference this name every time you sign a build.
 6. Create the **author certificate**: fill in your details, sign in with your Samsung Developer account, and save a backup of the resulting `.p12` file somewhere safe.
 7. Create the **distributor certificate**: sign in with the same Samsung account, then add the TV's DUID from step 1 (or connect the TV directly on the network and let Tizen Studio read it for you).
 8. Click **Finish**.
 
-> **Keep the backup.** Future Jellyfin updates must be signed with this *same* certificate — a different one is treated as a different publisher and won't be allowed to overwrite the existing install.
+> **Keep the backup.** Future Jellyfin updates must be signed with this *same* certificate a different one is treated as a different publisher and won't be allowed to overwrite the existing install.
 
 ## 2. Enable Developer Mode on the TV
 
@@ -59,12 +59,12 @@ sdb connect TV_IP_ADDRESS
 sdb devices
 ```
 
-`sdb devices` lists the connected TV and its device name (e.g. `UN75M70HDFXZA`) — note it down, you'll need it in step 6. The same connection can be made from Tizen Studio's GUI via **Window → Device Manager → +**.
+`sdb devices` lists the connected TV and its device name (e.g. `UN75M70HDFXZA`) note it down, you'll need it in step 6. The same connection can be made from Tizen Studio's GUI via **Window → Device Manager → +**.
 
 ## 4. Get the Jellyfin package in place
 
 1. Download the `Jellyfin.wgt` release you want from the [jellyfin-tizen releases page](https://github.com/jellyfin/jellyfin-tizen/releases).
-2. Move that `.wgt` file directly into `C:\tizen-studio\tools\ide\bin` — signing and installing both happen from this folder, so keeping the file here avoids typing out full paths later.
+2. Move that `.wgt` file directly into `C:\tizen-studio\tools\ide\bin` signing and installing both happen from this folder, so keeping the file here avoids typing out full paths later.
 
 ## 5. Sign the package
 
@@ -88,7 +88,7 @@ Use the signed filename from step 5 and the device name from step 3. A successfu
 <details>
 <summary>"tizen : The term 'tizen' is not recognized..."</summary>
 
-PowerShell — unlike cmd.exe — won't run an executable from the current folder unless it's prefixed with `.\`. From inside `C:\tizen-studio\tools\ide\bin`, run `.\tizen` instead of `tizen`. To drop the prefix permanently, add that folder to your PATH:
+PowerShell unlike cmd.exe won't run an executable from the current folder unless it's prefixed with `.\`. From inside `C:\tizen-studio\tools\ide\bin`, run `.\tizen` instead of `tizen`. To drop the prefix permanently, add that folder to your PATH:
 
 ```powershell
 [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\tizen-studio\tools\ide\bin", "User")
@@ -124,7 +124,7 @@ Only affects older-style DUIDs (the ones starting with `1.0#`). In Tizen Studio'
 <details>
 <summary><code>sdb connect</code> hangs or refuses</summary>
 
-Confirm the TV and computer are genuinely on the same subnet — corporate and guest Wi-Fi networks commonly isolate clients from each other, which blocks this entirely.
+Confirm the TV and computer are genuinely on the same subnet corporate and guest Wi-Fi networks commonly isolate clients from each other, which blocks this entirely.
 </details>
 
 ## Quick reference
@@ -140,4 +140,4 @@ cd C:\tizen-studio\tools\ide\bin
 
 ---
 
-Sources: [jellyfin/jellyfin-tizen](https://github.com/jellyfin/jellyfin-tizen) · [Samsung Developer — Creating Certificates](https://developer.samsung.com/smarttv/develop/getting-started/setting-up-sdk/creating-certificates.html) · [Samsung Developer — Permitting Device Installs](https://developer.samsung.com/galaxy-watch-tizen/getting-certificates/permit.html)
+Sources: [jellyfin/jellyfin-tizen](https://github.com/jellyfin/jellyfin-tizen) · [Samsung Developer Creating Certificates](https://developer.samsung.com/smarttv/develop/getting-started/setting-up-sdk/creating-certificates.html) · [Samsung Developer Permitting Device Installs](https://developer.samsung.com/galaxy-watch-tizen/getting-certificates/permit.html)
