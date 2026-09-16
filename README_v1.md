@@ -141,3 +141,18 @@ cd C:\tizen-studio\tools\ide\bin
 ---
 
 Sources: [jellyfin/jellyfin-tizen](https://github.com/jellyfin/jellyfin-tizen) · [Samsung Developer Creating Certificates](https://developer.samsung.com/smarttv/develop/getting-started/setting-up-sdk/creating-certificates.html) · [Samsung Developer Permitting Device Installs](https://developer.samsung.com/galaxy-watch-tizen/getting-certificates/permit.html)
+
+---
+
+## Prebuilt package in this branch
+
+`Jellyfin-10.10.z.wgt` (11 MB) is the package built for this TV, so step 4 can use it
+instead of downloading a release. Copy it into `C:\tizen-studio\tools\ide\bin` and continue
+from step 5.
+
+It was built from the unmodified official repos at these commits:
+
+| Repo | Branch | Commit |
+| --- | --- | --- |
+| [jellyfin/jellyfin-web](https://github.com/jellyfin/jellyfin-web) | `release-10.10.z` | `2efac6f67a` (2026-02-19) |
+| [jellyfin/jellyfin-tizen](https://github.com/jellyfin/jellyfin-tizen) | `master` | `31408c1` (2025-10-24) |
