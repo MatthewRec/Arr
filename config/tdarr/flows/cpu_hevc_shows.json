@@ -1,0 +1,232 @@
+{
+  "_id": "8mr6LvQOd",
+  "name": "CPU HEVC",
+  "priority": 0,
+  "flowPlugins": [
+    {
+      "name": "Codec is AV1",
+      "sourceRepo": "Community",
+      "pluginName": "checkVideoCodec",
+      "version": "1.0.0",
+      "inputsDB": {
+        "codec": "av1"
+      },
+      "fpEnabled": true,
+      "id": "CXuHxWnEn",
+      "position": {
+        "x": 1316.7232489470832,
+        "y": -397.5085916878105
+      }
+    },
+    {
+      "name": "Replace Original File",
+      "sourceRepo": "Community",
+      "pluginName": "replaceOriginalFile",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "Ue8bSqJIe",
+      "position": {
+        "x": 1105.8773410684855,
+        "y": -141.35337500947264
+      }
+    },
+    {
+      "name": "Input File",
+      "sourceRepo": "Community",
+      "pluginName": "inputFile",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "-Y3PO0lKV",
+      "position": {
+        "x": 1020,
+        "y": -720
+      }
+    },
+    {
+      "name": "Order MKV Streams",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "1.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_00td_action_re_order_all_streams_v2",
+        "streamTypes": "video,audio,subtile",
+        "processOrder": "channels,languages,streamTypes",
+        "codecs": "",
+        "languages": "eng,jpn,fre"
+      },
+      "fpEnabled": true,
+      "id": "1qtpkmYov",
+      "position": {
+        "x": 1106.6690418239737,
+        "y": -204.73809448540635
+      }
+    },
+    {
+      "name": "Transcode to H265",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "1.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_bsh1_Boosh_FFMPEG_QSV_HEVC",
+        "encoder_speedpreset": "medium",
+        "max_average_bitrate": "6000"
+      },
+      "fpEnabled": true,
+      "id": "n1F9o5ErB",
+      "position": {
+        "x": 1341.4113590844377,
+        "y": -276.75961821898545
+      }
+    },
+    {
+      "name": "Codec is HEVC",
+      "sourceRepo": "Community",
+      "pluginName": "checkVideoCodec",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "6f3iY0MkL",
+      "position": {
+        "x": 1130.9644271923264,
+        "y": -542.1812025840254
+      }
+    },
+    {
+      "name": "Codec is VP9",
+      "sourceRepo": "Community",
+      "pluginName": "checkVideoCodec",
+      "version": "1.0.0",
+      "inputsDB": {
+        "codec": "vp9"
+      },
+      "fpEnabled": true,
+      "id": "F-F2fgQ-R",
+      "position": {
+        "x": 1231.600376917044,
+        "y": -470.36606721220136
+      }
+    },
+    {
+      "name": "Keep English subtitles",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "1.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_Migz4CleanSubs",
+        "language": "eng,und",
+        "commentary": "false",
+        "sdh": "true",
+        "tag_language": ""
+      },
+      "fpEnabled": true,
+      "id": "subClean01",
+      "position": {
+        "x": 1020,
+        "y": -640
+      }
+    },
+    {
+      "name": "Bitrate over 4 Mbps",
+      "sourceRepo": "Community",
+      "pluginName": "checkOverallBitrate",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "brCheck01",
+      "position": {
+        "x": 1080,
+        "y": -636
+      },
+      "inputsDB": {
+        "unit": "mbps",
+        "greaterThan": "4",
+        "lessThan": "100000"
+      }
+    }
+  ],
+  "flowEdges": [
+    {
+      "source": "n1F9o5ErB",
+      "sourceHandle": "1",
+      "target": "1qtpkmYov",
+      "targetHandle": null,
+      "id": "rgBqAZuoV"
+    },
+    {
+      "source": "1qtpkmYov",
+      "sourceHandle": "1",
+      "target": "Ue8bSqJIe",
+      "targetHandle": null,
+      "id": "zgG5-EWv5"
+    },
+    {
+      "source": "6f3iY0MkL",
+      "sourceHandle": "2",
+      "target": "F-F2fgQ-R",
+      "targetHandle": null,
+      "id": "VMibh4V_h"
+    },
+    {
+      "source": "F-F2fgQ-R",
+      "sourceHandle": "2",
+      "target": "CXuHxWnEn",
+      "targetHandle": null,
+      "id": "Cr_OPA3j_"
+    },
+    {
+      "source": "CXuHxWnEn",
+      "sourceHandle": "2",
+      "target": "n1F9o5ErB",
+      "targetHandle": null,
+      "id": "hf1wVwu5-"
+    },
+    {
+      "source": "CXuHxWnEn",
+      "sourceHandle": "1",
+      "target": "1qtpkmYov",
+      "targetHandle": null,
+      "id": "SQdsTMFXr"
+    },
+    {
+      "source": "F-F2fgQ-R",
+      "sourceHandle": "1",
+      "target": "1qtpkmYov",
+      "targetHandle": null,
+      "id": "DX2juA_8H"
+    },
+    {
+      "source": "6f3iY0MkL",
+      "sourceHandle": "1",
+      "target": "1qtpkmYov",
+      "targetHandle": null,
+      "id": "cMJKKQzfx"
+    },
+    {
+      "source": "-Y3PO0lKV",
+      "sourceHandle": "1",
+      "target": "subClean01",
+      "targetHandle": null,
+      "id": "XCzCSyEZz"
+    },
+    {
+      "source": "subClean01",
+      "sourceHandle": "1",
+      "target": "brCheck01",
+      "targetHandle": null,
+      "id": "brEdge01"
+    },
+    {
+      "source": "brCheck01",
+      "sourceHandle": "1",
+      "target": "6f3iY0MkL",
+      "targetHandle": null,
+      "id": "brEdge02"
+    },
+    {
+      "source": "brCheck01",
+      "sourceHandle": "2",
+      "target": "Ue8bSqJIe",
+      "targetHandle": null,
+      "id": "brEdge03"
+    }
+  ],
+  "isUiLocked": false
+}

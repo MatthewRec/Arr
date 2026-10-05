@@ -1,0 +1,27 @@
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - JELLYFIN_PublishedServerUrl=http://<VM_IP> #optional
+    volumes:
+      - ./config:/config
+      - /data:/data
+    devices:
+      - /dev/dri:/dev/dri #Use for Intel QuickSync
+    ports:
+      - "<VM_IP>:8096:8096"
+      - 7359:7359/udp #Service Discovery
+    restart: unless-stopped
+
+# Fixed subnet, outside Docker auto-assigned pools. config/network.xml (KnownProxies,
+# LocalNetworkSubnets) depends on it; an auto-assigned subnet drifted on recreate.
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 10.99.0.0/24
+          gateway: 10.99.0.1
