@@ -28,6 +28,9 @@ arr_stack/
 │   └── jellyfin/
 │       ├── encoding.xml                   # Quick Sync transcoding settings
 │       └── network.xml                    # proxy / local subnet settings (<LAN_SUBNET> placeholder)
+├── TV_SideLoad/
+│   ├── README.md                          # Uses Tizen to sideload Jellyfin app onto Samsung TV 
+│   └── Jellyfin-10.10.z.wgt               # signed application **will need to sign your own**
 └── scripts/
     ├── crontab.txt                        # cron lines for every scheduled script
     ├── <getter>/
