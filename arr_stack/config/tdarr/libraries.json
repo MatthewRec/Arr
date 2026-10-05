@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Movies",
+    "folder": "/data/movies",
+    "cache": "/temp",
+    "output": ".",
+    "folderToFolderConversion": false,
+    "folderToFolderConversionDeleteSource": false,
+    "containerFilter": "mkv,mp4,mov,m4v,mpg,mpeg,avi,flv,webm,wmv,vob,evo,iso,m2ts,ts",
+    "folderWatching": true,
+    "useFsEvents": false,
+    "folderWatchScanInterval": "300",
+    "scanOnStart": true,
+    "scannerThreadCount": 2,
+    "processTranscodes": true,
+    "processHealthChecks": true,
+    "decisionMaker": {
+      "settingsPlugin": false,
+      "settingsFlows": true,
+      "settingsVideo": false,
+      "videoExcludeSwitch": true,
+      "video_codec_names_exclude": [
+        {
+          "codec": "hevc",
+          "checked": false
+        },
+        {
+          "codec": "h264",
+          "checked": true
+        }
+      ],
+      "video_size_range_include": {
+        "min": 0,
+        "max": 100000
+      },
+      "video_height_range_include": {
+        "min": 0,
+        "max": 3000
+      },
+      "video_width_range_include": {
+        "min": 0,
+        "max": 4000
+      },
+      "settingsAudio": false,
+      "audioExcludeSwitch": true,
+      "audio_codec_names_exclude": [
+        {
+          "codec": "mp3",
+          "checked": true
+        },
+        {
+          "codec": "aac",
+          "checked": false
+        }
+      ],
+      "audio_size_range_include": {
+        "min": 0,
+        "max": 10
+      }
+    },
+    "flowId": "subOnlyMv1",
+    "holdNewFiles": false,
+    "holdFor": 3600,
+    "holdForDisplayUnit": "hours",
+    "priority": 0,
+    "closedCaptionScan": false,
+    "exifToolScan": true,
+    "mediaInfoScan": true,
+    "foldersToIgnore": "",
+    "schedule": "01:00-07:00 every day (Library -> Schedule in the UI); scripts/tdarr/tdarr_worker_window.py sets 0 workers 06:30-07:00"
+  },
+  {
+    "name": "Shows",
+    "folder": "/data/shows",
+    "cache": "/temp",
+    "output": ".",
+    "folderToFolderConversion": false,
+    "folderToFolderConversionDeleteSource": false,
+    "containerFilter": "mkv,mp4,mov,m4v,mpg,mpeg,avi,flv,webm,wmv,vob,evo,iso,m2ts,ts",
+    "folderWatching": true,
+    "useFsEvents": false,
+    "folderWatchScanInterval": "300",
+    "scanOnStart": true,
+    "scannerThreadCount": 2,
+    "processTranscodes": true,
+    "processHealthChecks": true,
+    "decisionMaker": {
+      "settingsPlugin": false,
+      "settingsFlows": true,
+      "settingsVideo": false,
+      "videoExcludeSwitch": true,
+      "video_codec_names_exclude": [
+        {
+          "codec": "hevc",
+          "checked": false
+        },
+        {
+          "codec": "h264",
+          "checked": true
+        }
+      ],
+      "video_size_range_include": {
+        "min": 0,
+        "max": 100000
+      },
+      "video_height_range_include": {
+        "min": 0,
+        "max": 3000
+      },
+      "video_width_range_include": {
+        "min": 0,
+        "max": 4000
+      },
+      "settingsAudio": false,
+      "audioExcludeSwitch": true,
+      "audio_codec_names_exclude": [
+        {
+          "codec": "mp3",
+          "checked": true
+        },
+        {
+          "codec": "aac",
+          "checked": false
+        }
+      ],
+      "audio_size_range_include": {
+        "min": 0,
+        "max": 10
+      }
+    },
+    "flowId": "8mr6LvQOd",
+    "holdNewFiles": false,
+    "holdFor": 3600,
+    "holdForDisplayUnit": "hours",
+    "priority": 1,
+    "closedCaptionScan": false,
+    "exifToolScan": true,
+    "mediaInfoScan": true,
+    "foldersToIgnore": "",
+    "schedule": "01:00-07:00 every day (Library -> Schedule in the UI); scripts/tdarr/tdarr_worker_window.py sets 0 workers 06:30-07:00"
+  }
+]

@@ -1,0 +1,212 @@
+[
+  {
+    "quality": "Unknown",
+    "title": "Unknown",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "WORKPRINT",
+    "title": "WORKPRINT",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "CAM",
+    "title": "CAM",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "TELESYNC",
+    "title": "TELESYNC",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "TELECINE",
+    "title": "TELECINE",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "REGIONAL",
+    "title": "REGIONAL",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "DVDSCR",
+    "title": "DVDSCR",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "SDTV",
+    "title": "SDTV",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "DVD",
+    "title": "DVD",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "DVD-R",
+    "title": "DVD-R",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "WEBDL-480p",
+    "title": "WEBDL-480p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "WEBRip-480p",
+    "title": "WEBRip-480p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "Bluray-480p",
+    "title": "Bluray-480p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "Bluray-576p",
+    "title": "Bluray-576p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "HDTV-720p",
+    "title": "HDTV-720p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "WEBDL-720p",
+    "title": "WEBDL-720p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "WEBRip-720p",
+    "title": "WEBRip-720p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "Bluray-720p",
+    "title": "Bluray-720p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "HDTV-1080p",
+    "title": "HDTV-1080p",
+    "minSize": 57.7,
+    "preferredSize": 147.7,
+    "maxSize": 276
+  },
+  {
+    "quality": "WEBDL-1080p",
+    "title": "WEBDL-1080p",
+    "minSize": 47.3,
+    "preferredSize": 87.7,
+    "maxSize": 272
+  },
+  {
+    "quality": "WEBRip-1080p",
+    "title": "WEBRip-1080p",
+    "minSize": 33.6,
+    "preferredSize": 98.8,
+    "maxSize": 264
+  },
+  {
+    "quality": "Bluray-1080p",
+    "title": "Bluray-1080p",
+    "minSize": 33.6,
+    "preferredSize": 78,
+    "maxSize": 221.2
+  },
+  {
+    "quality": "Remux-1080p",
+    "title": "Remux-1080p",
+    "minSize": 36.9,
+    "preferredSize": 103.5,
+    "maxSize": 265.1
+  },
+  {
+    "quality": "HDTV-2160p",
+    "title": "HDTV-2160p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "WEBDL-2160p",
+    "title": "WEBDL-2160p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "WEBRip-2160p",
+    "title": "WEBRip-2160p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "Bluray-2160p",
+    "title": "Bluray-2160p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "Remux-2160p",
+    "title": "Remux-2160p",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "BR-DISK",
+    "title": "BR-DISK",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  },
+  {
+    "quality": "Raw-HD",
+    "title": "Raw-HD",
+    "minSize": 0,
+    "preferredSize": 3.3,
+    "maxSize": 7.2
+  }
+]

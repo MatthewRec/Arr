@@ -1,0 +1,261 @@
+# Compose file for the *arr stack. Configuration files are stored in the
+# directory you launch the compose file on. Change to bind mounts if needed.
+# All containers are ran with user and group ids of the main user and
+# group to avoid permissions issues of downloaded files, please refer
+# the read me file for more information.
+
+#############################################################################
+# NOTICE: We recently switched to using a .env file. PLEASE refer to the docs.
+# https://github.com/TechHutTV/homelab/tree/main/media#docker-compose-and-env
+#############################################################################
+
+networks:
+  socketproxy:
+    name: socketproxy
+    internal: true   # no internet access; only deunhealth <-> socket-proxy
+  servarrnetwork:
+    name: servarrnetwork
+    ipam:
+      config:
+        - subnet: 172.39.0.0/24
+
+services:
+  # airvpn recommended (referral url: https://airvpn.org/?referred_by=673908)
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun # If running on an LXC see readme for more info.
+    networks:
+      servarrnetwork:
+        ipv4_address: ${SET_IP_GLUETUN}
+    ports:
+      - "<VM_IP>:6789:6789"
+      - "<VM_IP>:9696:9696" # prowlarr
+    volumes:
+      - ./gluetun:/gluetun
+    # Make a '.env' file in the same directory.
+    env_file:
+      - .env
+    healthcheck:
+      test: ping -c 1 www.google.com || exit 1
+      interval: 20s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  tdarr:
+    image: ghcr.io/haveagitgat/tdarr:latest
+    container_name: tdarr
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri                   # Intel Quick Sync for the QSV HEVC flow step
+    group_add:
+      - "991"                               # host render group (owns /dev/dri/renderD128)
+      - "44"                                # host video group
+
+    networks:
+      servarrnetwork:
+        ipv4_address: ${SET_IP_TDARR}
+
+    ports:
+      - "<VM_IP>:8265:8265"                           # Web UI
+
+    environment:
+      - TZ=America/New_York
+      - PUID=1000                             # <-- CHANGE: match the UID your *arr / Getter containers use
+      - PGID=1000                             # <-- CHANGE: match the GID your *arr / Getter containers use
+      - UMASK_SET=002                         # group-writable output so *arr / Jellyfin can still touch the files
+      - internalNode=true                     # transcode worker runs inside this container
+      - inContainer=true
+      - ffmpegVersion=7
+      - auth=true
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - webUIPort=8265
+      - seededApiKey=${TDARR_API_KEY}
+      - apiKey=${TDARR_API_KEY}
+
+    volumes:
+      - /docker/tdarr/server:/app/server      # Tdarr database & stats  (persist)
+      - /docker/tdarr/configs:/app/configs    # Tdarr config            (persist)
+      - /docker/tdarr/logs:/app/logs          # Tdarr logs              (persist)
+      - /data:/data                           # SAME path your *arr apps use -> file paths stay identical (critical)
+      - /scratch/tdarr:/temp                  # in-progress transcodes; on the 200 GB /scratch disk (largest file ~39 GB)
+
+  socket-proxy:
+    image: tecnativa/docker-socket-proxy:v0.5.0
+    container_name: docker-socket-proxy
+    # Rules come from ./socket-proxy/haproxy.cfg.template (strict allow-list);
+    # the env flags below are not used by that file.
+    environment:
+      - CONTAINERS=1
+      - EVENTS=1
+      - POST=0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./socket-proxy/haproxy.cfg.template:/usr/local/etc/haproxy/haproxy.cfg.template:ro
+    networks:
+      - socketproxy
+    restart: always
+
+  deunhealth:
+    image: qmcgaw/deunhealth
+    container_name: deunhealth
+    environment:
+      - LOG_LEVEL=info
+      - HEALTH_SERVER_ADDRESS=127.0.0.1:9999
+      - TZ=${TZ}
+      - DOCKER_HOST=tcp://socket-proxy:2375
+    networks:
+      - socketproxy
+    depends_on:
+      - socket-proxy
+    restart: always
+
+  getter_template:
+  #all things with <getter> need to be changed, Including getter_template
+    image: lscr.io/linuxserver/<getter>:latest
+    container_name: <getter>
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./<getter>:/config
+      - /data:/data
+      - /scratch/<getter>:/scratch
+    depends_on:
+      gluetun:
+        condition: service_healthy
+        restart: true
+    restart: unless-stopped
+    network_mode: service:gluetun
+    healthcheck:
+      test: ["CMD-SHELL", "test -e /sys/class/net/eth0 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    labels:
+      - deunhealth.restart.on.unhealthy=true
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./prowlarr:/config
+    restart: unless-stopped
+    depends_on:
+      gluetun:
+        condition: service_healthy
+        restart: true
+    network_mode: service:gluetun
+    healthcheck:
+      test: ["CMD-SHELL", "test -e /sys/class/net/eth0 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    labels:
+      - deunhealth.restart.on.unhealthy=true
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./sonarr:/config
+      - /data:/data
+    ports:
+      - "<VM_IP>:8989:8989"
+    networks:
+      servarrnetwork:
+        ipv4_address: ${SET_IP_SONARR}
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./radarr:/config
+      - /data:/data
+    ports:
+      - "<VM_IP>:7878:7878"
+    networks:
+      servarrnetwork:
+        ipv4_address: ${SET_IP_RADARR}
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./bazarr:/config
+      - /data:/data
+    ports:
+      - "<VM_IP>:6767:6767"
+    networks:
+      servarrnetwork:
+        ipv4_address: ${SET_IP_BAZARR}
+
+  seerr:
+    container_name: seerr
+    image: ghcr.io/seerr-team/seerr:latest
+    environment:
+      - LOG_LEVEL=info
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+    restart: unless-stopped
+    volumes:
+      - ./seerr:/app/config
+    ports:
+      - "<VM_IP>:5055:5055"
+    networks:
+      servarrnetwork:
+        ipv4_address: ${SET_IP_SEERR}
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+    networks:
+      - servarrnetwork
+
+volumes:
+  data:
+  letsencrypt:
+  netbird-client:
+      name: netbird-client
+
